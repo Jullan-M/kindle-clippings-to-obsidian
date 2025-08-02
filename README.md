@@ -53,7 +53,13 @@ It’s an integral part of my [personal Obsidian Book Note system](https://dannb
 git clone https://github.com/dannberg/kindle-clippings-to-obsidian.git
 ```
 
-2. Make the script executable:
+2. Install Dependency:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Make the script executable:
 
 ```bash
 chmod +x extract-kindle-clippings.py
