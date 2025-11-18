@@ -167,7 +167,7 @@ A: This script was designed for Linux/Mac/BSD and may have issues on Windows.
 
 **Additional Resources**
 - [dannb.org](https://dannb.org)
-- [Monthly newsletter](https://dannb.org/newsletter)
+- [Monthly newsletter](https://thedannchronicles.com)
 
 ## Star History
 
