@@ -2,7 +2,7 @@
 
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg) ![Python 3.6+](https://img.shields.io/badge/python-3.6+-blue.svg) ![Obsidian](https://img.shields.io/badge/Obsidian-Compatible-purple.svg)
 
-A Python script that extracts your Kindle highlights and notes, formatting them beautifully for [Obsidian](https://obsidian.md/), a powerful knowledge management app.
+A Python script that extracts Kindle highlights and notes, formatting them beautifully for [Obsidian](https://obsidian.md/).
 
 ## Table of Contents
 
@@ -27,8 +27,6 @@ This script processes your Kindle’s My Clippings.txt file by:
 - Extracting highlights (and any accompanying notes)
 - Organizing them into separate text files—one per publication
 - Formatting the output using Markdown, which makes it easy to copy/paste into Obsidian
-
-It’s an integral part of my [personal Obsidian Book Note system](https://dannb.org/blog/2022/recalling-books-youve-read-made-easy/), but it’s flexible enough for any user looking to integrate their Kindle clippings into Obsidian.
 
 ## Features
 
@@ -96,23 +94,6 @@ Example:
 
 5. **Import into Obsidian** by copying the content from the generated Markdown files.
 
-### Example Output
-
-```markdown
-Highlights from The Personal MBA: Master the Art of Business
-============================================================
-
-Authors:: [[Josh Kaufman]]
-Recommended By::
-Tags:: [[📚 Books]]
-
-# The Personal MBA: Master the Art of Business
-
-### Highlights
-- It is important that students bring a certain ragamuffin, barefoot irreverence to their studies; they are not here to worship what is known, but to question it. —JACOB BRONOWSKI, WRITER AND PRESENTER OF THE ASCENT OF MAN
-- Every successful business (1) creates or provides something of value that (2) other people want or need (3) at a price they're willing to pay, in a way that (4) satisfies the purchaser's needs and expectations and (5) provides the business sufficient revenue to make it worthwhile for the owners to continue operation.
-```
-
 ## Customizing the Output
 
 You can easily customize how your highlights appear in Obsidian by modifying the output format in the script:
@@ -151,27 +132,6 @@ A: The script has been tested with first-generation Kindle Oasis, but should wor
 
 **Q: Will this work on Windows?**  
 A: This script was designed for Linux/Mac/BSD and may have issues on Windows.
-
-## Related Obsidian Systems
-
-**Blog Posts**
-- [Obsidian Daily Note system](https://dannb.org/blog/2022/obsidian-daily-note-template/)
-- [Obsidian People Note system](https://dannb.org/blog/2022/obsidian-people-note-template/)
-- [Obsidian Book Note system](https://dannb.org/blog/2022/recalling-books-youve-read-made-easy/)
-- [Daily Driver Task Management System](https://dannb.org/blog/2020/daily-driver-task-management-system/)
-
-**Video Tutorials**
-- [My Obsidian Daily Note Template video](https://youtu.be/v84uSIqqVPQ)
-- [My Obsidian Meeting Note Template video](https://youtu.be/Ud16HOQoS5Q)
-- [My Obsidian People Note Template video](https://youtu.be/N8K41HDRI3o)
-
-**Additional Resources**
-- [dannb.org](https://dannb.org)
-- [Monthly newsletter](https://thedannchronicles.com)
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=dannberg/kindle-clippings-to-obsidian&type=Date)](https://star-history.com/#dannberg/kindle-clippings-to-obsidian&Date)
 
 ## License
 
