@@ -4,23 +4,6 @@
 A Python-script that extracts and organises highlights/notes from the "My Clippings.txt" file on a Kindle e-reader. Formats for Obsidian.
 
 Usage: ./extract-kindle-clippings.py <My Clippings.txt file> -o [<optional: output directory>]
-
-Github repository: https://github.com/dannberg/kindle-clippings-to-obsidian
-
-    Copyright 2025, Dann Berg (dannb.org)
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import argparse
@@ -120,8 +103,6 @@ if not os.path.isdir(outpath):
 
 note_sep = "=========="
 
-commentstr = ".. "  # RST (reStructuredText) comment
-
 regex_title = re.compile(r"^(.*)\((.*)\)$")
 regex_info = re.compile(r"^- Your (\S+) (.*)[\s|]+Added on\s+(.+)$")
 regex_loc = re.compile(r"[Ll]ocation ([\d\-]+)")
@@ -129,7 +110,6 @@ regex_page = re.compile(r"page ([\d\-]+)")
 regex_date = re.compile(r"Added on\s+(.+)$")
 regex_num = re.compile(r"(\d+)")
 regex_numrange = re.compile(r"(\d+)\-(\d+)")
-
 regex_hashline = re.compile(r"\^([a-fA-F0-9]+)$")
 
 pub_title = {}
@@ -172,9 +152,7 @@ print("Found", len(existing_hashes), "existing note hashes")
 print("Processing clippings file", infile)
 
 mc = open(infile, "r", encoding="utf8")
-
 mc.read(1)  # Skip first character
-
 line = mc.readline().strip().replace("﻿", "")
 
 while line:
@@ -182,7 +160,7 @@ while line:
     key = line.strip()
     result_title = regex_title.findall(key)  # Extract title and author
     line = mc.readline().strip()  # Read information line
-    print(line)
+    # print(line)
     note_type, location, date = regex_info.findall(line)[
         0
     ]  # Extract note type, location and date
@@ -245,10 +223,12 @@ while line:
     dates[note_hash] = datestr
 
     line = mc.readline().strip()
+mc.close()
 
+print("Sorting chronologically and checking for duplicates:")
 # Sort highlights according to how when they chronologically appear in the book, not when they were highlighted.
 for k in pub_hashes.keys():
-    print(k)
+    print(f"\t{k}")
     if "loc. " in locations[pub_hashes[k][0]]:
         pub_hashes[k] = [
             v
@@ -308,12 +288,9 @@ for k in pub_hashes.keys():
             )
         ]
 
-mc.close()
-
 # Get user selection
 selected_titles = get_user_book_selection(pub_title)
 
-# Modify the main processing loop to only process selected books
 for key in pub_title.keys():
     # Skip if this book wasn't selected
     if pub_title[key] not in selected_titles:
