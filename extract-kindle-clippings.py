@@ -117,13 +117,13 @@ commentstr = ".. "  # RST (reStructuredText) comment
 
 regex_title = re.compile(r"^(.*)\((.*)\)$")
 regex_info = re.compile(r"^- Your (\S+) (.*)[\s|]+Added on\s+(.+)$")
-regex_loc = re.compile(r"location ([\d\-]+)")
+regex_loc = re.compile(r"[Ll]ocation ([\d\-]+)")
 regex_page = re.compile(r"page ([\d\-]+)")
 regex_date = re.compile(r"Added on\s+(.+)$")
 regex_num = re.compile(r"(\d+)")
 regex_numrange = re.compile(r"(\d+)\-(\d+)")
 
-regex_hashline = re.compile(r"^\.\.\s*([a-fA-F0-9]+)" + "\s*")
+regex_hashline = re.compile(r"\^([a-fA-F0-9]+)$")
 
 pub_title = {}
 pub_author = {}
@@ -274,12 +274,13 @@ for k in pub_hashes.keys():
 
             if (range1[0] in range2) or (range1[1] in range2):
                 len_lcs = longest_common_substring_len(str1, str2)
-                if len_lcs > 0.4 * max(len(str1), len(str2)):
+                if len_lcs > 0.4 * min(len(str1), len(str2)):
                     print(
-                        "Overlapping strings detected at loc.",
+                        "== Overlapping strings detected at loc.",
                         locations[hash1],
                         "/",
                         locations[hash2],
+                        "==",
                     )
                     print(str1)
                     print()
@@ -345,19 +346,20 @@ for key in pub_title.keys():
             titlestr = author + " - " + title
         else:
             titlestr = title
-        out.write(titlestr + "\n")
-        out.write(("-" * len(titlestr)) + "\n\n")
+        out.write(f"## {titlestr}\n")
     elif not newfile:
         # Many notes, output with header and metadata in a separate file
         # Write metadata
         out.write("---" + "\n")
         out.write("created_date: " + datetime.now().strftime("%Y-%m-%d") + "\n")
-        out.write("title: " + title + "\n")
+        out.write("title: " + getvalidfilename(title) + "\n")
         if author != "Unknown":
             out.write("authors: [" + author + "]" + "\n")
         out.write("tags:\n  - books" + "\n")
         out.write("---" + "\n")
 
+        out.write("## Notes" + "\n")
+        out.write("\n")
         out.write("## Summary" + "\n")
         out.write("\n")
         out.write("## Highlights" + "\n")
@@ -383,23 +385,14 @@ for key in pub_title.keys():
                 note_date,
             )
 
-            comment = str(
-                # commentstr
-                # + note_hash
-                # + " ; "
-                # + note_type
-                # +" ; " +
-                note_loc
-                + " ; "
-                + note_date
-            )
+            comment = f"**{note_loc}**; {note_date}^{note_hash}"
 
             if short:
-                comment += " ; " + author + " ; " + title
+                comment += "; " + author + "; " + title
 
             # this adds metadata before each note.
             out.write(comment + "\n")
-            out.write(">" + note + "\n---\n\n")
+            out.write(">" + note + "\n\n")  # "\n---\n\n"
         try:
             last_date = parse(note_date)
         except:

@@ -5,7 +5,7 @@ def getvalidfilename(filename):
     import unicodedata
 
     clean = unicodedata.normalize("NFKD", filename)
-    clean = re.sub(r"[()'?!:]", "", clean)
+    clean = re.sub(r"[()'?!:\[\]]", "", clean)
     return clean
 
 
