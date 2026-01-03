@@ -30,10 +30,9 @@ import os
 import re
 import sys
 from datetime import datetime, timedelta, timezone
+from difflib import SequenceMatcher
 
 from dateutil.parser import parse
-
-from utilities import getvalidfilename, longest_common_substring_len
 
 
 def parse_args():
@@ -91,6 +90,14 @@ def get_user_book_selection(titles):
         except ValueError:
             print("Please enter valid numbers separated by spaces")
             continue
+
+
+def getvalidfilename(filename):
+    import unicodedata
+
+    clean = unicodedata.normalize("NFKD", filename)
+    clean = re.sub(r"[()'?!:\[\]]", "", clean)
+    return clean
 
 
 args = parse_args()
@@ -254,7 +261,7 @@ for k in pub_hashes.keys():
                 ),
             )
         ]
-
+        # Check for duplications and overlaps within highlights
         for i in range(len(pub_hashes[k]) - 1):
             hash1, hash2 = pub_hashes[k][i], pub_hashes[k][i + 1]
             str1, str2 = notes[hash1], notes[hash2]
@@ -273,7 +280,10 @@ for k in pub_hashes.keys():
                 continue
 
             if (range1[0] in range2) or (range1[1] in range2):
-                len_lcs = longest_common_substring_len(str1, str2)
+                # Find longest common substring
+                # Idea fetched from here: https://stackoverflow.com/questions/18715688/find-common-substring-between-two-strings
+                seqmatch = SequenceMatcher(None, str1, str2).find_longest_match()
+                len_lcs = seqmatch.size
                 if len_lcs > 0.4 * min(len(str1), len(str2)):
                     print(
                         "== Overlapping strings detected at loc.",
@@ -282,7 +292,7 @@ for k in pub_hashes.keys():
                         locations[hash2],
                         "==",
                     )
-                    print(str1)
+                    print(str1[seqmatch.a : seqmatch.a + seqmatch.size])
                     print()
 
     elif "p." in locations[pub_hashes[k][0]]:
@@ -328,9 +338,13 @@ for key in pub_title.keys():
     for note_hash in pub_hashes[key]:
         if note_hash not in existing_hashes:
             new_hashes += 1
+        elif fname != existing_hashes[note_hash]:
+            fname = existing_hashes[note_hash]
+            print(f'Notes will be added to the file "{fname}".')
 
     if new_hashes > 0:
         print(new_hashes, "new notes found for", title)
+
     else:
         continue  # Skip to next title if there are no new hashes
 
